@@ -19,7 +19,7 @@ multiples = {100: "hundred", 1000: "thousand", 10 ** 6: "million", \
 
 def int2words_3d(n):
     if n == 0:
-        return ""
+        return []
     res_arr = []
     hundreds = n // 100
     rem = n % 100
@@ -63,4 +63,41 @@ def int2words(num):
     if part_ts >= 1:
         res_arr = res_arr + int2words_3d(part_ts) + ["thousand"]
     res_arr = res_arr + int2words_3d(rem_ts)
+    return res_arr
+
+def read_by_dig(num):
+    res_arr = []
+    for d in num:
+        if d.isdigit():
+            res_arr = res_arr + [digits[int(d)]]
+        else:
+            res_arr = res_arr + [d]
+    return res_arr
+
+def float2words(num):
+    res_arr = []
+    if num[0] == "-":
+        res_arr = res_arr + ["minus"]
+        num = num[1:]
+    num_parts = num.split(".")
+    if len(num_parts) == 1:
+        int_part = num_parts[0]
+    else:
+        int_part, frac_part = num_parts[0], num_parts[1]
+    int_part = "".join(int_part.split(","))
+    res_arr = res_arr + int2words(int_part)
+    if len(num_parts) >= 2:
+        res_arr = res_arr + ["point"] + read_by_dig(frac_part)
+    return res_arr
+
+def num2words(num):
+    res_arr = []
+    num_parts = num.split("/")
+    if len(num_parts) == 1:
+        numer = num_parts[0]
+    else:
+        numer, denom = num_parts[0], num_parts[1]
+    res_arr = res_arr + float2words(numer)
+    if len(num_parts) >= 2:
+        res_arr = res_arr + ["over"] + float2words(denom)
     return " ".join(res_arr)

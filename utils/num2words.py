@@ -16,7 +16,7 @@ tens = {10: "ten", 20: "twenty", 30: "thirty", 40: "forty", 50: "fifty", \
         
 multiples = {100: "hundred", 1000: "thousand", 10 ** 6: "million", \
              10 ** 9: "billion", 10 ** 12: "trillion"}
-        
+
 def int2words_3d(n):
     if n == 0:
         return ""
@@ -64,7 +64,3 @@ def int2words(num):
         res_arr = res_arr + int2words_3d(part_ts) + ["thousand"]
     res_arr = res_arr + int2words_3d(rem_ts)
     return " ".join(res_arr)
-
-def num2words(num):
-    
-    

@@ -1,12 +1,4 @@
-ordinals = {1: "first", 2: "second", 3: "third", 4: "fourth", 5: "fifth", \
-            6: "sixth", 7: "seventh", 8: "eighth", 9: "ninth", 10: "tenth", \
-            11: "eleventh", 12: "twelfth", 13: "thirteenth", 14: "fourteenth", \
-            15: "fifteenth", 16: "sixteenth", 17: "seventeenth", 18: "eighteenth", \
-            19: "nineteenth", 20: "twentieth", 21: "twenty first", \
-            22: "twenty second", 23: "twenty third", 24: "twenty fourth", \
-            25: "twenty fifth", 26: "twenty sixth", 27: "twenty sevent", \
-            28: "twenty eighth", 29: "twenty ninth", 30: "thirtieth", \
-            31: "thirty first"}
+import copy
 
 digits = {0: "zero", 1: "one", 2: "two", 3: "three", 4: "four", \
           5: "five", 6: "six", 7: "seven", 8: "eight", 9: "nine"}
@@ -23,13 +15,14 @@ tens = {10: "ten", 20: "twenty", 30: "thirty", 40: "forty", 50: "fifty", \
 multiples = {100: "hundred", 1000: "thousand", 10 ** 6: "million", \
              10 ** 9: "billion", 10 ** 12: "trillion"}
 
-def read_as_ordinals(num):
-    num = int(num)
-    if num <= 0 or num >= 32:
-        return {"NA": 1.0}
-    return {ordinals[num]: 1.0}
+ordinals = {"one": "first", "two": "second", "three": "third", "five": "fifth", \
+            "eight": "eighth", "nine": "ninth", "twelve": "twelfth", "twenty": "twentieth", \
+            "thirty": "thirtieth", "forty": "fortieth", "fifty": "fiftieth", \
+            "sixty": "sixtieth", "seventy": "seventieth", "eighty": "eightieth", \
+            "ninety": "ninetieth"}
 
 def read_by_digit(num):
+    # Read a number digit by digit
     method1 = ""
     method2 = ""
     for d in num:
@@ -46,6 +39,7 @@ def read_by_digit(num):
     return {method1: 0.5, method2: 0.5}
 
 def read_2d(num):
+    # Read an integer with at most 2 digits
     num = int(num)
     if num == 0:
         return ""
@@ -58,6 +52,7 @@ def read_2d(num):
     return tens[10*(num//10)] + " " + digits[num%10]
 
 def read_2d_year(num):
+    # Helper for reading years
     num = int(num)
     if num == 0:
         return "hundred"
@@ -70,27 +65,45 @@ def read_2d_year(num):
     return tens[10*(num//10)] + " " + digits[num%10]
 
 def read_year(num):
+    # Read a year number (can have at most 2 letters at beginning or end)
+    bl = ""
+    el = ""
+    if num[0].isalpha() and not num[1].isalpha():
+        bl = num[0] + " "
+        num = num[1:]
+    elif num[0].isalpha() and num[1].isalpha() and not num[2].isalpha():
+        bl = num[0] + " " + num[1] + " "
+        num = num[2:]
+    if num[-1].isalpha() and not num[-2].isalpha():
+        el = " " + num[-1]
+        num = num[:-1]
+    elif num[-1].isalpha() and num[-2].isalpha() and not num[-3].isalpha():
+        el = " " + num[-2] + " " + num[-1]
+        num = num[:-2]
+    if not num.isdigit():
+        return {"NA": 1.0}
     if int(num) >= 10000 or int(num) <= 0:
         return {"NA": 1.0}
     millenium = num[:-3]
     century = num[:-2]
     year = num[-2:]
     if century == "":
-        return {read_2d(year): 1.0}
+        return {bl + read_2d(year) + el: 1.0}
     if millenium != "" and century[-1] == "0":
         if year == "00":
             method1 = digits[int(millenium)] + " thousand"
             method2 = read_2d(century) + " " + read_2d_year(year)
-            return {method1: 0.9, method2: 0.1}
+            return {bl + method1 + el: 0.9, bl + method2 + el: 0.1}
         else:
             method1 = digits[int(millenium)] + " thousand " + read_2d(year)
             method2 = digits[int(millenium)] + " thousand and " + read_2d(year)
             method3 = read_2d(century) + " " + read_2d_year(year)
-            return {method1: 0.5, method2: 0.3, method3: 0.2}
+            return {bl + method1 + el: 0.5, bl + method2 + el: 0.3, bl + method3 + el: 0.2}
     method = read_2d(century) + " " + read_2d_year(year)
-    return {method: 1.0}
+    return {bl + method + el: 1.0}
 
 def int2words_3d(n):
+    # Read an integer with at most 3 digits (as array of words)
     if n == 0:
         return []
     res_arr = []
@@ -115,9 +128,10 @@ def int2words_3d(n):
     return res_arr
 
 def int2words(num):
+    # Read an integer with at most 15 digits (as array of words)
     n = int(num)
     if n == 0:
-        return "zero"
+        return ["zero"]
     part_tn = n // (10 ** 12)
     rem_tn = n % (10 ** 12)
     part_bn = rem_tn // (10 ** 9)
@@ -139,6 +153,7 @@ def int2words(num):
     return res_arr
 
 def read_by_dig(num):
+    # Read a number digit by digit (as array of words)
     res_arr = []
     for d in num:
         if d.isdigit():
@@ -148,6 +163,7 @@ def read_by_dig(num):
     return res_arr
 
 def float2words(num):
+    # Read a number (integer or float, as array of words)
     res_arr = []
     if num[0] == "-":
         res_arr = res_arr + ["minus"]
@@ -164,6 +180,7 @@ def float2words(num):
     return res_arr
 
 def num2words(num):
+    # Read a number (integer, float or fraction)
     res_arr = []
     num_parts = num.split("/")
     if len(num_parts) == 1:
@@ -174,3 +191,112 @@ def num2words(num):
     if len(num_parts) >= 2:
         res_arr = res_arr + ["over"] + float2words(denom)
     return " ".join(res_arr)
+
+def int2words_4d(num):
+    # Alternative way for reading 4-digit integers
+    if len(num) != 4:
+        return "NA"
+    hundreds = num[:2]
+    units = num[2:]
+    if units[0] == "0":
+        units = units[1]
+    if units == "0":
+        res = num2words(hundreds) + " hundred"
+    else:
+        res = num2words(hundreds) + " hundred " + num2words(units)
+    return res
+
+def ordinal_num(w):
+    # Convert a cardinal number into ordinal
+    res_arr = w.split(" ")
+    last = res_arr[-1]
+    if last in ordinals:
+        res_arr[-1] = ordinals[last]
+    else:
+        res_arr[-1] = last + "th"
+    return " ".join(res_arr)
+
+def read_num_type(num, t):
+    # Read a number based on type
+    if t == "s":
+        # Serial number, e.g. phone number
+        return read_by_digit(num)
+    if t == "y":
+        # Year number, highway number, house number, room number
+        return read_year(num)
+    # General (cardinal) number or ordinal number
+    cond1 = (len(num) == 4 and eval(num) >= 1000 and eval(num) < 10000)
+    cond2 = (len(num) == 5 and eval(num) <= -1000 and eval(num) > -10000)
+    if cond1 or cond2:
+        form1 = num2words(num)
+        if eval(num) < 0:
+            form2 = "minus " + int2words_4d(num[1:])
+        else:
+            form2 = int2words_4d(num)
+        if t == "o":
+            # Ordinal number
+            form1 = ordinal_num(form1)
+            form2 = ordinal_num(form2)
+        if abs(eval(num)) < 2000:
+            return {form1: 0.5, form2: 0.5}
+        else:
+            return {form1: 0.8, form2: 0.2}
+    if t == "o":
+        # Ordinal number
+        return {ordinal_num(num2words(num)): 1.0}
+    return {num2words(num): 1.0}
+
+def read_num_basic(num, types):
+    # Read a number based on possible types
+    res = {}
+    for t in types:
+        p = read_num_type(num, t)
+        for f in p:
+            if f in res:
+                res[f] = res[f] + types[t] * p[f]
+            else:
+                res[f] = types[t] * p[f]
+    return res
+
+def split_options(old_p, original, new_option, new_p):
+    p = copy.deepcopy(old_p)
+    p[original] -= new_p
+    if new_option in p:
+        p[new_option] += new_p
+    else:
+        p[new_option] = new_p
+    return p
+
+def alternative_one(w):
+    mult = {"hundred", "thousand", "million", "billion", "trillion"}
+    old_arr = w.split(" ")
+    res_arr = []
+    for i in range(len(old_arr) - 1):
+        if old_arr[i] == "one" and old_arr[i+1] in mult:
+            res_arr.append("a")
+        else:
+            res_arr.append(old_arr[i])
+    res_arr.append(old_arr[-1])
+    return " ".join(res_arr)
+
+def alternative_neg(w):
+    old_arr = w.split(" ")
+    res_arr = []
+    for i in range(len(old_arr)):
+        if old_arr[i] == "minus":
+            res_arr.append("negative")
+        else:
+            res_arr.append(old_arr[i])
+    return " ".join(res_arr)
+
+def read_num(num, types):
+    res = read_num_basic(num, types)
+    for w in res:
+        alt_one = alternative_one(w)
+        prob = res[w]
+        res = split_options(res, w, alt_one, prob / 2)
+    for w in res:
+        alt_neg = alternative_neg(w)
+        prob = res[w]
+        res = split_options(res, w, alt_neg, prob / 2)
+    return res

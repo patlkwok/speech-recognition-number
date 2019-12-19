@@ -102,6 +102,19 @@ def read_year(num):
     method = read_2d(century) + " " + read_2d_year(year)
     return {bl + method + el: 1.0}
 
+def read_time(num):
+    num_arr = num.split(":")
+    hr, m = num_arr[0], num_arr[1]
+    hr_w = read_2d(hr)
+    if int(hr) == 0:
+        hr_w = "zero"
+    if m == "00":
+        method1 = hr_w + " " + "o' clock"
+        method2 = hr_w
+        return {method1: 0.5, method2: 0.5}
+    m_w = read_2d(m)
+    return {hr_w + " " + m_w: 1.0}
+
 def int2words_3d(n):
     # Read an integer with at most 3 digits (as array of words)
     if n == 0:
@@ -182,6 +195,10 @@ def float2words(num):
 def num2words(num):
     # Read a number (integer, float or fraction)
     res_arr = []
+    percent = False
+    if num[-1] == "%":
+        percent = True
+        num = num[:-1]
     num_parts = num.split("/")
     if len(num_parts) == 1:
         numer = num_parts[0]
@@ -190,6 +207,8 @@ def num2words(num):
     res_arr = res_arr + float2words(numer)
     if len(num_parts) >= 2:
         res_arr = res_arr + ["over"] + float2words(denom)
+    if percent:
+        res_arr.append("percent")
     return " ".join(res_arr)
 
 def int2words_4d(num):
@@ -224,6 +243,9 @@ def read_num_type(num, t):
     if t == "y":
         # Year number, highway number, house number, room number
         return read_year(num)
+    if t == "t":
+        # Time
+        return read_time(num)
     # General (cardinal) number or ordinal number
     cond1 = (len(num) == 4 and eval(num) >= 1000 and eval(num) < 10000)
     cond2 = (len(num) == 5 and eval(num) <= -1000 and eval(num) > -10000)

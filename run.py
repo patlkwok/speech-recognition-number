@@ -1,3 +1,9 @@
+"""
+Main Python script for running
+Author: Patrick Kwok (lk2754)
+December 21, 2019
+"""
+
 import itertools
 import sys
 from get_number_type import *
@@ -5,6 +11,8 @@ from read_numbers import *
 
 def get_type_sentence(s):
     # Get the possible types of numbers given a sentence
+    # Input:  s - a string corresponding to the input sentence
+    # Output: list of possible types (and probs) for each number in the sentence
     nums = get_numbers(s)
     res = []
     for n in nums:
@@ -14,6 +22,8 @@ def get_type_sentence(s):
 
 def read_num_sentence(s):
     # Get the possible way to read numbers given a sentence
+    # Input:  s - a string corresponding to the input sentence
+    # Output: list of possible spelt-out forms (and probs) for each number in the sentence
     types = get_type_sentence(s)
     res = []
     for t in types:
@@ -29,7 +39,9 @@ def read_num_sentence(s):
     return res
 
 def get_replaces(reads):
-    # Some format conversion
+    # Some format conversion, build instructions for replacing numbers
+    # Input:  reads - list of dictionaries, each containing the numbers to replace and probabilities of new forms
+    # Output: list of lists of dictionaries, each containing one replace instructions for one number
     possible_ways = [list(reads[i]["p"].keys()) for i in range(len(reads))]
     all_replaces = []
     iter_ways = itertools.product(*possible_ways)
@@ -46,6 +58,9 @@ def get_replaces(reads):
     
 def replace_num(s, replaces):
     # Replace numbers in a sentence with spelt-out forms
+    # Inputs:  s        - a string corresponding to the input sentence
+    #          replaces - list of dictionaries containing replace instructions
+    # Output:  a string corresponding to the new sentence, and the probability
     s = s.lower()
     prob = 1.0
     s_arr = s.split(" ")
@@ -58,6 +73,8 @@ def replace_num(s, replaces):
 
 def get_all_possibles(s):
     # Get all possible ways of reading a sentence containing numbers
+    # Input:  s - a string corresponding to the input sentence
+    # Output: list of possible new sentences and their probabilities
     possibles = []
     reads = read_num_sentence(s)
     all_replaces = get_replaces(reads)
@@ -68,10 +85,13 @@ def get_all_possibles(s):
     return possibles
 
 if __name__ == "__main__":
+    # Main driver
     input_file, output_file = sys.argv[1], sys.argv[2]
+    # Open and read input file
     with open(input_file) as f:
         contents = f.readlines()
     contents = [s.strip() for s in contents]
+    # Write results to output file
     with open(output_file, "w+") as f:
         for s in contents:
             f.write(s)

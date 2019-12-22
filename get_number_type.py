@@ -1,7 +1,15 @@
+"""
+Functions for getting types of numbers given context
+Author: Patrick Kwok (lk2754)
+December 21, 2019
+"""
+
 import re
 
 def clean_word(w):
     # Clean a word, remove punctuations at beginning or end
+    # Input:  w - string corresponding to the original word
+    # Output: string corresponding to the new (cleaned) word
     new_w = ""
     for c in w:
         if c in {"'", '"', "(", ")", "[", "]", "{", "}"}:
@@ -13,10 +21,14 @@ def clean_word(w):
 
 def contain_num(s):
     # Check if a string contains at least one digit
+    # Input:  s - a string
+    # Output: Boolean, True if and only if input contains at least one digit
     return any(c.isdigit() for c in s)
 
 def get_numbers(s):
     # Get the words containing digits from a sentence
+    # Input:  s - a string corresponding to the input sentence
+    # Output: list of words (containing digits), their locations in sentence, words before and after them
     words = s.split(" ")
     words = [clean_word(w).lower() for w in words]
     res = []
@@ -36,6 +48,8 @@ def get_numbers(s):
 
 def get_type(d):
     # For each type, get the probabilities that the number belongs to it
+    # Input:  d - a dictionary containing the number, and the words before and after it
+    # Output: a dictionary containing probabilities of each type (and other useful information)
     months = {"january", "february", "march", "april", "may", "june", \
               "july", "august", "september", "october", "november", "december"}
     num = d["num"]

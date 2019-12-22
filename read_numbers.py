@@ -1,3 +1,9 @@
+"""
+Functions for reading numbers given type
+Author: Patrick Kwok (lk2754)
+December 21, 2019
+"""
+
 import copy
 
 digits = {0: "zero", 1: "one", 2: "two", 3: "three", 4: "four", \
@@ -22,7 +28,9 @@ ordinals = {"one": "first", "two": "second", "three": "third", "five": "fifth", 
             "ninety": "ninetieth"}
 
 def read_by_digit(num):
-    # Read a number digit by digit
+    # Read a number digit by digit (e.g. "342" = "three four two")
+    # Input:  num - string containing the number (can have letters / symbols)
+    # Output: a dictionary of possible spelt-out forms and probabilities
     method1 = ""
     method2 = ""
     for d in num:
@@ -40,6 +48,8 @@ def read_by_digit(num):
 
 def read_2d(num):
     # Read an integer with at most 2 digits
+    # Input:  num - string containing the number
+    # Output: a string corresponding to the spelt-out form
     num = int(num)
     if num == 0:
         return ""
@@ -52,7 +62,9 @@ def read_2d(num):
     return tens[10*(num//10)] + " " + digits[num%10]
 
 def read_2d_year(num):
-    # Helper for reading years
+    # Helper function for reading years
+    # Input:  num - string containing the number
+    # Output: a string that is part of the spelt-out form of a year number
     num = int(num)
     if num == 0:
         return "hundred"
@@ -66,6 +78,8 @@ def read_2d_year(num):
 
 def read_year(num):
     # Read a year number (can have at most 2 letters at beginning or end)
+    # Input:  num - string containing the year number (can have letters)
+    # Output: a dictionary of possible spelt-out forms and probabilities
     bl = ""
     el = ""
     if num[0].isalpha() and not num[1].isalpha():
@@ -103,6 +117,9 @@ def read_year(num):
     return {bl + method + el: 1.0}
 
 def read_time(num):
+    # Read a time of day
+    # Input:  num - string containing the time of day
+    # Output: a dictionary of possible spelt-out forms and probabilities
     num_arr = num.split(":")
     hr, m = num_arr[0], num_arr[1]
     hr_w = read_2d(hr)
@@ -117,6 +134,8 @@ def read_time(num):
 
 def int2words_3d(n):
     # Read an integer with at most 3 digits (as array of words)
+    # Input:  n - an integer between 0 and 999
+    # Output: array of words corresponding to the spelt-out form
     if n == 0:
         return []
     res_arr = []
@@ -142,6 +161,8 @@ def int2words_3d(n):
 
 def int2words(num):
     # Read an integer with at most 15 digits (as array of words)
+    # Input:  num - an integer between 0 and 10^15-1
+    # Output: array of words corresponding to the spelt-out form
     n = int(num)
     if n == 0:
         return ["zero"]
@@ -166,7 +187,9 @@ def int2words(num):
     return res_arr
 
 def read_by_dig(num):
-    # Read a number digit by digit (as array of words)
+    # Read a number digit by digit (can have letters / symbols, as array of words)
+    # Input:  num - string containing the number
+    # Output: array of words corresponding to the spelt-out form
     res_arr = []
     for d in num:
         if d.isdigit():
@@ -177,6 +200,8 @@ def read_by_dig(num):
 
 def float2words(num):
     # Read a number (integer or float, as array of words)
+    # Input:  num - string containing the number
+    # Output: array of words corresponding to the spelt-out form
     res_arr = []
     if num[0] == "-":
         res_arr = res_arr + ["minus"]
@@ -194,6 +219,8 @@ def float2words(num):
 
 def num2words(num):
     # Read a number (integer, float or fraction)
+    # Input:  num - string containing the number
+    # Output: a string corresponding to the spelt-out form
     res_arr = []
     percent = False
     if num[-1] == "%":
@@ -212,7 +239,9 @@ def num2words(num):
     return " ".join(res_arr)
 
 def int2words_4d(num):
-    # Alternative way for reading 4-digit integers
+    # Alternative way for reading 4-digit integers ("1200" = "twelve hundred")
+    # Input:  num - string containing the number (4 digits)
+    # Output: a string corresponding to the spelt-out form
     if len(num) != 4:
         return "NA"
     hundreds = num[:2]
@@ -227,6 +256,8 @@ def int2words_4d(num):
 
 def ordinal_num(w):
     # Convert a cardinal number into ordinal
+    # Input:  w - string containing the spelt-out form of a cardinal number
+    # Output: a string corresponding to the spelt-out form of the ordinal number
     res_arr = w.split(" ")
     last = res_arr[-1]
     if last in ordinals:
@@ -236,7 +267,10 @@ def ordinal_num(w):
     return " ".join(res_arr)
 
 def read_num_type(num, t):
-    # Read a number based on type
+    # Read a number given a particular type
+    # Inputs: num - string containing the number
+    #         t   - character indicating the type
+    # Output: a dictionary of possible spelt-out forms and probabilities
     if t == "s":
         # Serial number, e.g. phone number
         return read_by_digit(num)
@@ -273,7 +307,10 @@ def read_num_type(num, t):
     return {num2words(num): 1.0}
 
 def read_num_basic(num, types):
-    # Read a number based on possible types
+    # Read a number based on possible types (basic version)
+    # Inputs: num   - string containing the number
+    #         types - dictionary of probabilities of each type
+    # Output: a dictionary of possible spelt-out forms and probabilities
     res = {}
     for t in types:
         p = read_num_type(num, t)
@@ -285,6 +322,12 @@ def read_num_basic(num, types):
     return res
 
 def split_options(old_p, original, new_option, new_p):
+    # Reallocate probabilities given a new option and probability
+    # Inputs: old_p      - dictionary of original probabilities
+    #         original   - the old option that will see probability decreased
+    #         new_option - the new option
+    #         new_p      - the probability (change) for the new option
+    # Output: dictionary of new probabilities
     p = copy.deepcopy(old_p)
     p[original] -= new_p
     if new_option in p:
@@ -294,6 +337,9 @@ def split_options(old_p, original, new_option, new_p):
     return p
 
 def alternative_one(w):
+    # Generate alternative spelt-out form if "one" is present (replace by "a")
+    # Input:  w - string containing the spelt-out form of a number
+    # Output: string corresponding to the new spelt-out form
     mult = {"hundred", "thousand", "million", "billion", "trillion"}
     old_arr = w.split(" ")
     res_arr = []
@@ -306,6 +352,9 @@ def alternative_one(w):
     return " ".join(res_arr)
 
 def alternative_neg(w):
+    # Generate alternative spelt-out form if "minus" is present (replace by "negative")
+    # Input:  w - string containing the spelt-out form of a number
+    # Output: string corresponding to the new spelt-out form
     old_arr = w.split(" ")
     res_arr = []
     for i in range(len(old_arr)):
@@ -316,7 +365,12 @@ def alternative_neg(w):
     return " ".join(res_arr)
 
 def read_num(num, types):
+    # Read a number based on possible types (final version)
+    # Inputs: num   - string containing the number
+    #         types - dictionary of probabilities of each type
+    # Output: a dictionary of possible spelt-out forms and probabilities
     res = read_num_basic(num, types)
+    # From basic forms, add alternative forms
     for w in res:
         alt_one = alternative_one(w)
         prob = res[w]

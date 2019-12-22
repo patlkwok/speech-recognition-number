@@ -1,0 +1,50 @@
+1200 days ago in mid 2016
+0.3 | twelve hundred days ago in mid two thousand sixteen
+0.066 | twelve hundred days ago in mid two thousand and sixteen
+0.132 | twelve hundred days ago in mid twenty sixteen
+0.041999999999999996 | twelve hundred days ago in mid twenty hundred sixteen
+0.03 | twelve hundred days ago in mid two zero one six
+0.03 | twelve hundred days ago in mid two oh one six
+0.075 | one thousand two hundred days ago in mid two thousand sixteen
+0.0165 | one thousand two hundred days ago in mid two thousand and sixteen
+0.033 | one thousand two hundred days ago in mid twenty sixteen
+0.010499999999999999 | one thousand two hundred days ago in mid twenty hundred sixteen
+0.0075 | one thousand two hundred days ago in mid two zero one six
+0.0075 | one thousand two hundred days ago in mid two oh one six
+0.025 | one two zero zero days ago in mid two thousand sixteen
+0.005500000000000001 | one two zero zero days ago in mid two thousand and sixteen
+0.011000000000000003 | one two zero zero days ago in mid twenty sixteen
+0.0034999999999999996 | one two zero zero days ago in mid twenty hundred sixteen
+0.0025000000000000005 | one two zero zero days ago in mid two zero one six
+0.0025000000000000005 | one two zero zero days ago in mid two oh one six
+0.025 | one two oh oh days ago in mid two thousand sixteen
+0.005500000000000001 | one two oh oh days ago in mid two thousand and sixteen
+0.011000000000000003 | one two oh oh days ago in mid twenty sixteen
+0.0034999999999999996 | one two oh oh days ago in mid twenty hundred sixteen
+0.0025000000000000005 | one two oh oh days ago in mid two zero one six
+0.0025000000000000005 | one two oh oh days ago in mid two oh one six
+0.075 | a thousand two hundred days ago in mid two thousand sixteen
+0.0165 | a thousand two hundred days ago in mid two thousand and sixteen
+0.033 | a thousand two hundred days ago in mid twenty sixteen
+0.010499999999999999 | a thousand two hundred days ago in mid twenty hundred sixteen
+0.0075 | a thousand two hundred days ago in mid two zero one six
+0.0075 | a thousand two hundred days ago in mid two oh one six
+
+
+45.6% of the work has been done by 2:00 pm
+0.405 | forty five point six percent of the work has been done by two o' clock pm
+0.405 | forty five point six percent of the work has been done by two pm
+0.045000000000000005 | forty five point six percent of the work has been done by two : zero zero pm
+0.045000000000000005 | forty five point six percent of the work has been done by two : oh oh pm
+0.045000000000000005 | four five . six % of the work has been done by two o' clock pm
+0.045000000000000005 | four five . six % of the work has been done by two pm
+0.005000000000000001 | four five . six % of the work has been done by two : zero zero pm
+0.005000000000000001 | four five . six % of the work has been done by two : oh oh pm
+
+
+the temperature was -2 degrees
+0.45 | the temperature was minus two degrees
+0.1 | the temperature was - two degrees
+0.45 | the temperature was negative two degrees
+
+

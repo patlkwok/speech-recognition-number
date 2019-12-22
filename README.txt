@@ -1,6 +1,7 @@
 Improving Performances of Speech Recognizers on Numbers
 Final Project for COMS E6998-7 (Fall 2019) by Patrick Kwok (lk2754@columbia.edu)
 GitHub repository for this project: https://github.com/patlkwok/speech-recognition-number
+December 21, 2019
 
 --------------------------------------------------
 
